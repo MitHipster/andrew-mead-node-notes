@@ -1,5 +1,5 @@
-const fs = require('fs');
-const chalk = require('chalk');
+const fs = require('fs'),
+	chalk = require('chalk');
 
 const notesFile = 'notes_data.json';
 
@@ -7,9 +7,11 @@ const fetchNotes = () => {
 	// Will catch if file does not exist or data from file is invalid
 	try {
 		const notesString = fs.readFileSync(notesFile);
+
 		return JSON.parse(notesString);
 	} catch (e) {
 		console.info(chalk.blue('Creating a new file and/or dataset.'));
+
 		return [];
 	}
 };
@@ -28,6 +30,7 @@ const addNote = (title, body) => {
 	if (duplicateNotes.length === 0) {
 		notes.push(note);
 		saveNotes(notes);
+
 		return note;
 	}
 };
@@ -49,6 +52,7 @@ const getAll = () => {
 
 const getNote = title => {
 	const notes = fetchNotes();
+
 	// Return Filtered out note with matching title
 	return notes.filter(note => note.title === title)[0];
 };

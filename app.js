@@ -1,9 +1,32 @@
-const yargs = require('yargs');
-const chalk = require('chalk');
+const yargs = require('yargs'),
+	chalk = require('chalk');
 
 const notes = require('./notes');
 
-const argv = yargs.argv;
+const titleOptions = {
+		describe: 'Title of note',
+		demand: true,
+		alias: 't'
+	},
+	bodyOptions = {
+		describe: 'Body of note',
+		demand: true,
+		alias: 'b'
+	};
+
+const argv = yargs
+	.command('add', 'Add a new note', {
+		title: titleOptions,
+		body: bodyOptions
+	})
+	.command('remove', 'Remove a note', {
+		title: titleOptions
+	})
+	.command('list', 'List all notes')
+	.command('read', 'Display a note', {
+		title: titleOptions
+	})
+	.help().argv;
 const command = argv._[0];
 
 const displayNote = note => {
@@ -29,6 +52,7 @@ case 'add': {
 			chalk.red('\nA note with this title already exists. Please try again.')
 		);
 	}
+
 	break;
 }
 
@@ -41,6 +65,7 @@ case 'remove': {
 	} else {
 		errorMessage();
 	}
+
 	break;
 }
 
@@ -50,6 +75,7 @@ case 'list': {
 	console.info(chalk.blue(`\nPrinting ${allNotes.length} note(s)...\n`));
 
 	allNotes.forEach(note => displayNote(note));
+
 	break;
 }
 
@@ -62,10 +88,12 @@ case 'read': {
 	} else {
 		errorMessage();
 	}
+
 	break;
 }
 
 default:
 	console.warn(chalk.bgRed('\nCommand not recognized'));
+
 	break;
 }
