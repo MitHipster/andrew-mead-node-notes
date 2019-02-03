@@ -1,26 +1,28 @@
 // const fs = require('fs');
 // const _ = require('lodash');
+const yargs = require('yargs');
 
-// const notes = require('./notes');
+const notes = require('./notes');
 
-let command = process.argv[2];
-console.log('==>: process.argv', process.argv);
+const argv = yargs.argv;
+let command = argv._[0];
+console.log('==>: argv', argv);
 
 switch (command) {
 case 'add':
-	console.log('Add new note');
+	notes.addNote(argv.title, argv.body);
 	break;
 case 'remove':
-	console.log('Remove a note');
+	notes.removeNote(argv.title);
 	break;
 case 'list':
-	console.log('List all notes');
+	notes.getAll();
 	break;
 case 'read':
-	console.log('Read a note');
+	notes.getNote(argv.title);
 	break;
 
 default:
-	console.log('Command not recognized');
+	console.log('==>: Command not recognized');
 	break;
 }
