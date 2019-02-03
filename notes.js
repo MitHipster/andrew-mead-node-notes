@@ -1,5 +1,3 @@
-console.log('==>: Starting notes.js');
-
 const fs = require('fs');
 const chalk = require('chalk');
 
@@ -46,7 +44,7 @@ const removeNote = title => {
 };
 
 const getAll = () => {
-	console.log('==>: Getting all notes');
+	return fetchNotes();
 };
 
 const getNote = title => {

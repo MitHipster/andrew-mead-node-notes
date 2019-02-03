@@ -1,5 +1,3 @@
-// const fs = require('fs');
-// const _ = require('lodash');
 const yargs = require('yargs');
 const chalk = require('chalk');
 
@@ -7,11 +5,10 @@ const notes = require('./notes');
 
 const argv = yargs.argv;
 const command = argv._[0];
-console.log('==>: argv', argv);
 
 const displayNote = note => {
 	console.info(chalk.blue('Title: '), note.title);
-	console.info(chalk.blue('Body: '), note.body);
+	console.info(chalk.blue('Body: '), note.body, '\n');
 };
 
 const errorMessage = () => {
@@ -47,9 +44,15 @@ case 'remove': {
 	break;
 }
 
-case 'list':
-	notes.getAll();
+case 'list': {
+	const allNotes = notes.getAll();
+
+	console.info(chalk.blue(`\nPrinting ${allNotes.length} note(s)...\n`));
+
+	allNotes.forEach(note => displayNote(note));
 	break;
+}
+
 case 'read': {
 	const note = notes.getNote(argv.title);
 
@@ -63,6 +66,6 @@ case 'read': {
 }
 
 default:
-	console.log('==>: Command not recognized');
+	console.warn(chalk.bgRed('\nCommand not recognized'));
 	break;
 }
