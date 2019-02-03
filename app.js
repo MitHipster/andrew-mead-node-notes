@@ -12,22 +12,33 @@ console.log('==>: argv', argv);
 switch (command) {
 case 'add': {
 	const note = notes.addNote(argv.title, argv.body);
-	console.log('==>: note', note);
+
 	if (note) {
-		console.info(chalk.green('Your note was successfully added.\n'));
+		console.info(chalk.green('\nYour note was successfully added.\n'));
 		console.info(chalk.blue('Title: '), note.title);
 		console.info(chalk.blue('Body: '), note.body);
 	} else {
 		console.warn(
-			chalk.red('A note with this title already exists. Please try again.')
+			chalk.red('\nA note with this title already exists. Please try again.')
 		);
 	}
 	break;
 }
 
-case 'remove':
-	notes.removeNote(argv.title);
+case 'remove': {
+	const removed = notes.removeNote(argv.title);
+
+	if (removed) {
+		console.info(chalk.green('\nYour note was successfully removed.\n'));
+		console.info(chalk.blue('Title: '), argv.title);
+	} else {
+		console.warn(
+			chalk.red('\nA note with this title does not exist. Please try again.')
+		);
+	}
 	break;
+}
+
 case 'list':
 	notes.getAll();
 	break;

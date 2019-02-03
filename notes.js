@@ -35,7 +35,14 @@ const addNote = (title, body) => {
 };
 
 const removeNote = title => {
-	console.log('==>: removeNote -> title', title);
+	const notes = fetchNotes(),
+		// Filter out note with matching title
+		remainingNotes = notes.filter(note => note.title !== title);
+
+	saveNotes(remainingNotes);
+
+	// Return either true or false if a note was removed
+	return notes.length !== remainingNotes.length;
 };
 
 const getAll = () => {
