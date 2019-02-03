@@ -5,7 +5,7 @@ const yargs = require('yargs');
 const notes = require('./notes');
 
 const argv = yargs.argv;
-let command = argv._[0];
+const command = argv._[0];
 console.log('==>: argv', argv);
 
 switch (command) {
