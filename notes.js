@@ -50,7 +50,9 @@ const getAll = () => {
 };
 
 const getNote = title => {
-	console.log('==>: getNote -> title', title);
+	const notes = fetchNotes();
+	// Return Filtered out note with matching title
+	return notes.filter(note => note.title === title)[0];
 };
 
 module.exports = {
