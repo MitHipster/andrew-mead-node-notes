@@ -1,29 +1,36 @@
 console.log('==>: Starting notes.js');
 
 const fs = require('fs');
+const chalk = require('chalk');
+
 const notesFile = 'notes_data.json';
 
-const addNote = (title, body) => {
-	let notes = [];
-	const note = { title, body };
-
+const fetchNotes = () => {
 	// Will catch if file does not exist or data from file is invalid
 	try {
 		const notesString = fs.readFileSync(notesFile);
-		notes = JSON.parse(notesString);
+		return JSON.parse(notesString);
 	} catch (e) {
-		console.info('Creating a new file and/or dataset.');
+		console.info(chalk.blue('Creating a new file and/or dataset.'));
+		return [];
 	}
+};
 
-	// Check notes array for duplicate title
-	let duplicateNotes = notes.filter(note => note.title === title);
+const saveNotes = notes => {
+	fs.writeFileSync(notesFile, JSON.stringify(notes));
+};
+
+const addNote = (title, body) => {
+	const notes = fetchNotes(),
+		note = { title, body },
+		// Check notes array for duplicate title
+		duplicateNotes = notes.filter(note => note.title === title);
 
 	// Update notes array if title is unique and write back to file
 	if (duplicateNotes.length === 0) {
 		notes.push(note);
-		fs.writeFileSync(notesFile, JSON.stringify(notes));
-	} else {
-		console.warn('A note with this title already exists. Please try again.');
+		saveNotes(notes);
+		return note;
 	}
 };
 
