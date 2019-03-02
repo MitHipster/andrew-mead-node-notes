@@ -47,7 +47,24 @@ yargs.command({
 	}
 });
 
-// Create remove note command
+// Create delete note command
+yargs.command({
+	command: ['delete', 'd'],
+	describe: 'Delete a note',
+	builder: {
+		title: titleOptions
+	},
+	handler: argv => {
+		const deleted = notes.deleteNote(argv.title);
+
+		if (deleted) {
+			console.info(chalk.green('\nYour note was successfully deleted.\n'));
+			console.info(chalk.blue('Title: '), argv.title);
+		} else {
+			errorMessage();
+		}
+	}
+});
 yargs.command({
 	command: ['remove', 'r'],
 	describe: 'Remove a note',

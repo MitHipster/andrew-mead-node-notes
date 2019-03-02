@@ -35,14 +35,14 @@ const addNote = (title, body) => {
 	}
 };
 
-const removeNote = title => {
+const deleteNote = title => {
 	const notes = fetchNotes(),
 		// Filter out note with matching title
 		remainingNotes = notes.filter(note => note.title !== title);
 
 	saveNotes(remainingNotes);
 
-	// Return either true or false if a note was removed
+	// Return either true or false if a note was deleted
 	return notes.length !== remainingNotes.length;
 };
 
@@ -59,7 +59,7 @@ const getNote = title => {
 
 module.exports = {
 	addNote,
-	removeNote,
+	deleteNote,
 	getAll,
 	getNote
 };
