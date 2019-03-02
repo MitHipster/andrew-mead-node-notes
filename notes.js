@@ -23,10 +23,10 @@ const saveNotes = notes => {
 const addNote = (title, body) => {
 	const notes = fetchNotes(),
 		// Check notes array for duplicate title
-		duplicateNotes = notes.filter(note => note.title === title);
+		duplicateNote = notes.find(note => note.title === title);
 
 	// Update notes array if title is unique and write back to file
-	if (duplicateNotes.length === 0) {
+	if (!duplicateNote) {
 		notes.push({ title, body });
 		saveNotes(notes);
 
@@ -41,7 +41,6 @@ const deleteNote = title => {
 		isChanged = notes.length !== remainingNotes.length;
 
 	if (isChanged) {
-		console.log('Test');
 		saveNotes(remainingNotes);
 	}
 
@@ -49,11 +48,11 @@ const deleteNote = title => {
 	return isChanged;
 };
 
-const getAll = () => {
+const listNotes = () => {
 	return fetchNotes();
 };
 
-const getNote = title => {
+const readNote = title => {
 	const notes = fetchNotes();
 
 	// Return Filtered out note with matching title
@@ -63,6 +62,6 @@ const getNote = title => {
 module.exports = {
 	addNote,
 	deleteNote,
-	getAll,
-	getNote
+	listNotes,
+	readNote
 };

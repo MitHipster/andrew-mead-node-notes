@@ -71,7 +71,7 @@ yargs.command({
 	command: ['list', 'l'],
 	describe: 'List all notes',
 	handler: () => {
-		const allNotes = notes.getAll();
+		const allNotes = notes.listNotes();
 
 		console.info(chalk.blue(`\nPrinting ${allNotes.length} note(s)...\n`));
 
@@ -87,7 +87,7 @@ yargs.command({
 		title: titleOptions
 	},
 	handler: argv => {
-		const note = notes.getNote(argv.title);
+		const note = notes.readNote(argv.title);
 
 		if (note) {
 			console.info(chalk.green('\nYour note was successfully found.\n'));
