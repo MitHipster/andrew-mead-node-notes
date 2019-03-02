@@ -65,61 +65,38 @@ yargs.command({
 		}
 	}
 });
+
+// Create list notes command
 yargs.command({
-	command: ['remove', 'r'],
-	describe: 'Remove a note',
+	command: ['list', 'l'],
+	describe: 'List all notes',
+	handler: () => {
+		const allNotes = notes.getAll();
+
+		console.info(chalk.blue(`\nPrinting ${allNotes.length} note(s)...\n`));
+
+		allNotes.forEach(note => displayNote(note));
+	}
+});
+
+// Create read note command
+yargs.command({
+	command: ['read', 'r'],
+	describe: 'Read a note',
 	builder: {
 		title: titleOptions
 	},
 	handler: argv => {
-		const removed = notes.removeNote(argv.title);
+		const note = notes.getNote(argv.title);
 
-		if (removed) {
-			console.info(chalk.green('\nYour note was successfully removed.\n'));
-			console.info(chalk.blue('Title: '), argv.title);
+		if (note) {
+			console.info(chalk.green('\nYour note was successfully found.\n'));
+			displayNote(note);
 		} else {
 			errorMessage();
 		}
 	}
 });
-
-const argv = yargs
-	.command('list', 'List all notes')
-	.command('read', 'Display a note', {
-		title: titleOptions
-	})
-	.help().argv;
-const command = argv._[0];
-
-switch (command) {
-case 'list': {
-	const allNotes = notes.getAll();
-
-	console.info(chalk.blue(`\nPrinting ${allNotes.length} note(s)...\n`));
-
-	allNotes.forEach(note => displayNote(note));
-
-	break;
-}
-
-case 'read': {
-	const note = notes.getNote(argv.title);
-
-	if (note) {
-		console.info(chalk.green('\nYour note was successfully found.\n'));
-		displayNote(note);
-	} else {
-		errorMessage();
-	}
-
-	break;
-}
-
-default:
-	console.warn(chalk.bgRed('\nCommand not recognized'));
-
-	break;
-}
 
 // Parse arguments to yargs command calls
 yargs.parse();
