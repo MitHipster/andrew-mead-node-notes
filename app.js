@@ -3,16 +3,49 @@ const yargs = require('yargs'),
 
 const notes = require('./notes');
 
+// Helper functions
+const displayNote = note => {
+	console.info(chalk.blue('Title: '), note.title);
+	console.info(chalk.blue('Body: '), note.body, '\n');
+};
+
+const errorMessage = () => {
+	console.warn(chalk.red('\nA note with this title does not exist. Please try again.'));
+};
+
+// Specifies requirements for note title and body
 const titleOptions = {
+		alias: 't',
 		describe: 'Title of note',
-		demand: true,
-		alias: 't'
+		demandOption: true,
+		type: 'string'
 	},
 	bodyOptions = {
+		alias: 'b',
 		describe: 'Body of note',
-		demand: true,
-		alias: 'b'
+		demandOption: true,
+		type: 'string'
 	};
+
+// Create add note command
+yargs.command({
+	command: ['add2', 'a'],
+	describe: 'Add a new note',
+	builder: {
+		title: titleOptions,
+		body: bodyOptions
+	},
+	handler: argv => {
+		const note = notes.addNote(argv.title, argv.body);
+
+		if (note) {
+			console.info(chalk.green('\nYour note was successfully added.\n'));
+			displayNote(note);
+		} else {
+			console.warn(chalk.red('\nA note with this title already exists. Please try again.'));
+		}
+	}
+});
 
 const argv = yargs
 	.command('add', 'Add a new note', {
@@ -29,33 +62,7 @@ const argv = yargs
 	.help().argv;
 const command = argv._[0];
 
-const displayNote = note => {
-	console.info(chalk.blue('Title: '), note.title);
-	console.info(chalk.blue('Body: '), note.body, '\n');
-};
-
-const errorMessage = () => {
-	console.warn(
-		chalk.red('\nA note with this title does not exist. Please try again.')
-	);
-};
-
 switch (command) {
-case 'add': {
-	const note = notes.addNote(argv.title, argv.body);
-
-	if (note) {
-		console.info(chalk.green('\nYour note was successfully added.\n'));
-		displayNote(note);
-	} else {
-		console.warn(
-			chalk.red('\nA note with this title already exists. Please try again.')
-		);
-	}
-
-	break;
-}
-
 case 'remove': {
 	const removed = notes.removeNote(argv.title);
 
@@ -97,3 +104,5 @@ default:
 
 	break;
 }
+
+yargs.parse();
