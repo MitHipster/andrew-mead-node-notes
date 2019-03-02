@@ -6,7 +6,7 @@ const notesFile = 'notes_data.json';
 const fetchNotes = () => {
 	// Will catch if file does not exist or data from file is invalid
 	try {
-		const notesString = fs.readFileSync(notesFile);
+		const notesString = fs.readFileSync(notesFile).toString();
 
 		return JSON.parse(notesString);
 	} catch (e) {
@@ -22,16 +22,15 @@ const saveNotes = notes => {
 
 const addNote = (title, body) => {
 	const notes = fetchNotes(),
-		note = { title, body },
 		// Check notes array for duplicate title
 		duplicateNotes = notes.filter(note => note.title === title);
 
 	// Update notes array if title is unique and write back to file
 	if (duplicateNotes.length === 0) {
-		notes.push(note);
+		notes.push({ title, body });
 		saveNotes(notes);
 
-		return note;
+		return { title, body };
 	}
 };
 
