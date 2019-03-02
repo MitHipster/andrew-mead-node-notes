@@ -29,7 +29,7 @@ const titleOptions = {
 
 // Create add note command
 yargs.command({
-	command: ['add2', 'a'],
+	command: ['add', 'a'],
 	describe: 'Add a new note',
 	builder: {
 		title: titleOptions,
@@ -47,14 +47,26 @@ yargs.command({
 	}
 });
 
-const argv = yargs
-	.command('add', 'Add a new note', {
-		title: titleOptions,
-		body: bodyOptions
-	})
-	.command('remove', 'Remove a note', {
+// Create remove note command
+yargs.command({
+	command: ['remove', 'r'],
+	describe: 'Remove a note',
+	builder: {
 		title: titleOptions
-	})
+	},
+	handler: argv => {
+		const removed = notes.removeNote(argv.title);
+
+		if (removed) {
+			console.info(chalk.green('\nYour note was successfully removed.\n'));
+			console.info(chalk.blue('Title: '), argv.title);
+		} else {
+			errorMessage();
+		}
+	}
+});
+
+const argv = yargs
 	.command('list', 'List all notes')
 	.command('read', 'Display a note', {
 		title: titleOptions
@@ -63,19 +75,6 @@ const argv = yargs
 const command = argv._[0];
 
 switch (command) {
-case 'remove': {
-	const removed = notes.removeNote(argv.title);
-
-	if (removed) {
-		console.info(chalk.green('\nYour note was successfully removed.\n'));
-		console.info(chalk.blue('Title: '), argv.title);
-	} else {
-		errorMessage();
-	}
-
-	break;
-}
-
 case 'list': {
 	const allNotes = notes.getAll();
 
@@ -105,4 +104,5 @@ default:
 	break;
 }
 
+// Parse arguments to yargs command calls
 yargs.parse();
