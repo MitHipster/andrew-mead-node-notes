@@ -8,7 +8,7 @@ Andrew Mead - The Complete Node.js Developer Course
 
 ## Description
 
-Re-created a terminal-based note taking app using Node.js and Yargs with options to `add`, `remove`, `read` and `list` notes stored in a JSON file.
+Re-created a terminal-based note taking app using Node.js and Yargs with options to `add`, `delete`, `read` and `list` notes stored in a JSON file.
 
 ### Prerequisites
 
@@ -20,7 +20,7 @@ brew install node
 
 ### Installing
 
-After downloading or cloning the repo perform the following steps:
+After downloading or cloning the repository perform the following steps:
 
 Open the project folder at the root in your terminal and run `npm install` to download the dependencies needed for this project.
 
